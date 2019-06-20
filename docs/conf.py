@@ -25,6 +25,8 @@ author = 'LuckyDams'
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 
+# Fix for readthedocs compil
+master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
 
