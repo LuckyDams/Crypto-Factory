@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>API reference &#8212; Crypto-Factory 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Templates" href="../modules/templates.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api-reference">
+<span id="api-api"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-crypto_factory.interface"><span id="api-interface"></span></span><div class="section" id="interface">
+<h2>interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
+<p>This module owns the client interface within the main class <code class="docutils literal notranslate"><span class="pre">CryptoFactory</span></code>.</p>
+<dl class="class">
+<dt id="crypto_factory.interface.CryptoFactory">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.interface.</code><code class="sig-name descname">CryptoFactory</code><a class="headerlink" href="#crypto_factory.interface.CryptoFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client <strong>interface</strong> for Crypto-Factory.</p>
+<p>It provides following features access:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Crypto services management</strong> (See <code class="docutils literal notranslate"><span class="pre">factory</span></code> module.)</p></li>
+<li><p>Abstraction <strong>methods for encryption</strong>; rely on underneath Crypto
+services (See <code class="docutils literal notranslate"><span class="pre">providers</span></code> module.)</p></li>
+<li><p><strong>Tagging</strong> mechanism</p></li>
+<li><p><strong>Advanced method(s)</strong> such as <code class="docutils literal notranslate"><span class="pre">rotate</span></code> to migrate encrypted data
+to another Crypto service</p></li>
+<li><p><strong>Crypto utilities</strong> such as generate random keys and strings, inspect
+tags or encoding functions (See <code class="docutils literal notranslate"><span class="pre">utilities</span></code> module.)</p></li>
+<li><p><strong>Built-in Crypto providers</strong> for direct use of defined encryption
+algorithms (See <code class="docutils literal notranslate"><span class="pre">providers</span></code> module.)</p></li>
+<li><p><strong>Crypto templates</strong> for building your own encryption algorithms
+(See <code class="docutils literal notranslate"><span class="pre">providers</span></code> module.)</p></li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="crypto_factory.interface.CryptoFactory.services">
+<em class="property">property </em><code class="sig-name descname">services</code><a class="headerlink" href="#crypto_factory.interface.CryptoFactory.services" title="Permalink to this definition">¶</a></dt>
+<dd><p>entry-point to <strong>Crypto services manager</strong>
+(See <code class="docutils literal notranslate"><span class="pre">CryptoServicesManager</span></code> class for details.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.interface.CryptoFactory.utils">
+<em class="property">property </em><code class="sig-name descname">utils</code><a class="headerlink" href="#crypto_factory.interface.CryptoFactory.utils" title="Permalink to this definition">¶</a></dt>
+<dd><p>entry-point to <strong>Crypto utilities</strong>
+(See <code class="docutils literal notranslate"><span class="pre">CryptoUtils</span></code> class for details.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.interface.CryptoFactory.encrypt">
+<code class="sig-name descname">encrypt</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">mode</em>, <em class="sig-param">tag=True</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.interface.CryptoFactory.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction method for <strong>symmetric encryption</strong>.</p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> method of selected Crypto service.
+Will add a ‘tag’ to encrypted ‘data’ before returning result if <code class="docutils literal notranslate"><span class="pre">tag=True</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>str</em><em> or </em><em>bytes</em>) – Plain data (to encrypt).</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em> or </em><em>int</em>) – Crypto service identifier (‘sid’ in <code class="docutils literal notranslate"><span class="pre">factory</span></code>).</p></li>
+<li><p><strong>tag</strong> (<em>bool</em>) – Add the Crypto service tag to ‘data’ if <em>True</em> (default).
+If Crypto service has tagging disabled (no ‘tag’ on <code class="docutils literal notranslate"><span class="pre">register</span></code>),
+this parameter will be skipped (set to <em>False</em>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encrypted data</strong> as <em>str</em></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#crypto_factory.exceptions.CryptoFactoryError" title="crypto_factory.exceptions.CryptoFactoryError"><strong>CryptoFactoryError</strong></a> – An exception is raised if an error occurs. Check error message for details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.interface.CryptoFactory.decrypt">
+<code class="sig-name descname">decrypt</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">mode=None</em>, <em class="sig-param">tag_strict=False</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.interface.CryptoFactory.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction method for <strong>symmetric decryption</strong>.</p>
+<p>Check if tag is matching selected Crypto service ‘mode’ (if ‘tag_strict’ enabled).
+Remove tag before calling  <code class="docutils literal notranslate"><span class="pre">decrypt</span></code> method of selected Crypto service.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>str</em><em> or </em><em>bytes</em>) – Encrypted data (to decrypt).</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em> or </em><em>int</em>) – Crypto service identifier (‘sid’ in <code class="docutils literal notranslate"><span class="pre">factory</span></code>).</p></li>
+<li><p><strong>tag_strict</strong> (<em>bool</em>) – Enforce tag validation (<em>False</em> by default).
+If <em>True</em>, compare data tag with Crypto service tag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>decrypted data</strong> as <em>str</em></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#crypto_factory.exceptions.CryptoFactoryError" title="crypto_factory.exceptions.CryptoFactoryError"><strong>CryptoFactoryError</strong></a> – An exception is raised if an error occurs. Check error message for details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.interface.CryptoFactory.rotate">
+<code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">from_modes=None</em>, <em class="sig-param">to_mode=None</em>, <em class="sig-param">tag_strict=False</em>, <em class="sig-param">tag=True</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.interface.CryptoFactory.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advanced method to <strong>‘rotate’ encrypted data</strong> from one or more Crypto
+services to a target one. It can be used for keys rotation, migration of
+existing data to a new Crypto service, …</p>
+<p>Based on decrypt and encrypt methods, will provide same tag options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>str</em><em> or </em><em>bytes</em>) – Encrypted data (to rotate).</p></li>
+<li><p><strong>from_modes</strong> (<em>str</em><em> or </em><em>list</em>) – Source Crypto service identifier(s).</p></li>
+<li><p><strong>to_mode</strong> (<em>str</em><em> or </em><em>int</em>) – Target Crypto service identifier.</p></li>
+<li><p><strong>tag_strict</strong> (<em>bool</em>) – Enforce tag validation (see <code class="docutils literal notranslate"><span class="pre">decrypt</span></code> method).</p></li>
+<li><p><strong>tag</strong> (<em>bool</em>) – Add the Crypto service tag (see <code class="docutils literal notranslate"><span class="pre">encrypt</span></code> method).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encrypted data</strong> as <em>str</em> (to target Crypto service format)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#crypto_factory.exceptions.CryptoFactoryError" title="crypto_factory.exceptions.CryptoFactoryError"><strong>CryptoFactoryError</strong></a> – An exception is raised if an error occurs. In particular when
+no ‘from_modes’ methods are able to decrypt data.
+Check error message for details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-crypto_factory.factory"><span id="api-factory"></span></span><div class="section" id="factory">
+<h2>factory<a class="headerlink" href="#factory" title="Permalink to this headline">¶</a></h2>
+<p>This module is responsible of managing Crypto providers through the <code class="docutils literal notranslate"><span class="pre">CryptoServicesManager</span></code> class.</p>
+<dl class="class">
+<dt id="crypto_factory.factory.CryptoServicesManager">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.factory.</code><code class="sig-name descname">CryptoServicesManager</code><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>CryptoServiceManager is the “factory” class which will manage the Crypto
+providers and will handle calls from the client interface.</p>
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.providers">
+<em class="property">property </em><code class="sig-name descname">providers</code><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.providers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index of active Crypto services</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.tags">
+<em class="property">property </em><code class="sig-name descname">tags</code><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index of current tags associated to a Crypto services</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.get_mode">
+<code class="sig-name descname">get_mode</code><span class="sig-paren">(</span><em class="sig-param">sid</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.get_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Crypto service instance by its identifier</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.get_mode_tag">
+<code class="sig-name descname">get_mode_tag</code><span class="sig-paren">(</span><em class="sig-param">sid</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.get_mode_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Crypto service tag by its identifier</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.get_tag_mode">
+<code class="sig-name descname">get_tag_mode</code><span class="sig-paren">(</span><em class="sig-param">tag</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.get_tag_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Crypto service identifier by its tag</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.register">
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">config=None</em>, <em class="sig-param">sid=None</em>, <em class="sig-param">builder=None</em>, <em class="sig-param">tag=None</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register and initialize a Crypto service using its builder class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>dict</em>) – Crypto service parameters to initialize it (dict).
+Required keys/values are dependant to arguments needed by
+the Crypto service (ie: key, iv, …). Can also have <code class="docutils literal notranslate"><span class="pre">id</span></code>,
+<code class="docutils literal notranslate"><span class="pre">builder</span></code> and <code class="docutils literal notranslate"><span class="pre">tag</span></code> keys to replace following arguments.</p></li>
+<li><p><strong>sid</strong> (<em>str</em><em> or </em><em>int</em>) – Crypto service identifier to register with.
+(Equivalent to <code class="docutils literal notranslate"><span class="pre">mode</span></code> argument in client interface)</p></li>
+<li><p><strong>builder</strong> (<em>class</em><em> or </em><em>str</em>) – <p>Crypto service builder as a child class of <code class="docutils literal notranslate"><span class="pre">CryptoBuilder</span></code>.
+Class name as <em>str</em> also supported for built-in providers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">builder=None</span></code>, a null entry will be created for this
+service identifier. This is the method to use to deregister
+a service.</p>
+</div>
+</p></li>
+<li><p><strong>tag</strong> (<em>str</em>) – Crypto service tag as a string of characters (tag can be used as
+identifier on encrypted data). The tag will be formatted using
+<code class="docutils literal notranslate"><span class="pre">normalize_tag</span></code> method (from <code class="docutils literal notranslate"><span class="pre">CryptoUtils</span></code> class). “<code class="docutils literal notranslate"><span class="pre">$</span></code>”
+character is reserved as it is used as separator.
+(See <a class="reference internal" href="#normalize-tag"><span class="std std-ref">API</span></a> for details)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">sid</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+Return <code class="docutils literal notranslate"><span class="pre">sid</span></code> if builder has been successfully registered and
+initialized as an available service.
+Return <code class="docutils literal notranslate"><span class="pre">None</span></code> if builder has not been initialized.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#crypto_factory.exceptions.CryptoFactoryError" title="crypto_factory.exceptions.CryptoFactoryError"><strong>CryptoFactoryError</strong></a> – If the Crypto service is unable to register or initialize, an error
+is raised. Check error message for details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.factory.CryptoServicesManager.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">sid</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.factory.CryptoServicesManager.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call to a Crypto service instance</p>
+<p>This method is called by abstraction methods from the client interface
+and should not be used directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sid</strong> (<em>str</em><em> or </em><em>int</em>) – Crypto service identifier to call.
+(Equivalent to <code class="docutils literal notranslate"><span class="pre">mode</span></code> argument in client interface)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Crypto service builder</strong> class instance</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#crypto_factory.exceptions.CryptoFactoryError" title="crypto_factory.exceptions.CryptoFactoryError"><strong>CryptoFactoryError</strong></a> – If the Crypto service is not registered.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-crypto_factory.providers"><span id="api-providers"></span></span><div class="section" id="providers">
+<h2>providers<a class="headerlink" href="#providers" title="Permalink to this headline">¶</a></h2>
+<p>This module contains <strong>built-in Crypto builders</strong> and associated services.</p>
+<dl class="class">
+<dt id="crypto_factory.providers.DummyServiceBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.providers.</code><code class="sig-name descname">DummyServiceBuilder</code><a class="headerlink" href="#crypto_factory.providers.DummyServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Builder for <code class="docutils literal notranslate"><span class="pre">DummyService</span></code>:</dt><dd><p>For illustration purpose only (do NOT use it in production !!!)</p>
+</dd>
+<dt>specifications:</dt><dd><ul class="simple">
+<li><p>Surround data with <code class="docutils literal notranslate"><span class="pre">label</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="crypto_factory.providers.DummyServiceBuilder.service">
+<code class="sig-name descname">service</code><a class="headerlink" href="#crypto_factory.providers.DummyServiceBuilder.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DummyService</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.providers.DummyServiceBuilder.initialize">
+<em class="property">static </em><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.providers.DummyServiceBuilder.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="crypto_factory.providers.FernetServiceBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.providers.</code><code class="sig-name descname">FernetServiceBuilder</code><a class="headerlink" href="#crypto_factory.providers.FernetServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Builder for <code class="docutils literal notranslate"><span class="pre">FernetService</span></code>:</dt><dd><p>Fernet implementation (secured)</p>
+</dd>
+<dt>specifications:</dt><dd><ul class="simple">
+<li><p>AES / CBC mode / PKCS7 padding</p></li>
+<li><p>HMAC authentication with SHA256</p></li>
+<li><p>256 bits <code class="docutils literal notranslate"><span class="pre">key</span></code> (used for AES &amp; HMAC)</p></li>
+<li><p>random 128-bit IV</p></li>
+<li><p>urlsafe Base64 encoding</p></li>
+<li><p>string to bytes conversion in UTF-8</p></li>
+</ul>
+</dd>
+</dl>
+<p>(<a class="reference external" href="https://cryptography.io/en/latest/fernet/">https://cryptography.io/en/latest/fernet/</a>)</p>
+<dl class="attribute">
+<dt id="crypto_factory.providers.FernetServiceBuilder.service">
+<code class="sig-name descname">service</code><a class="headerlink" href="#crypto_factory.providers.FernetServiceBuilder.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">FernetService</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.providers.FernetServiceBuilder.initialize">
+<em class="property">static </em><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.providers.FernetServiceBuilder.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="crypto_factory.providers.AESServiceBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.providers.</code><code class="sig-name descname">AESServiceBuilder</code><a class="headerlink" href="#crypto_factory.providers.AESServiceBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Builder for <code class="docutils literal notranslate"><span class="pre">AESService</span></code>:</dt><dd><p>AES-CBC-PKCS7 implementation</p>
+</dd>
+<dt>specifications:</dt><dd><ul class="simple">
+<li><p>AES / CBC mode / PKCS7 padding</p></li>
+<li><p>key of different sizes (128, 192 or 256 bits)</p></li>
+<li><p>random of fixed IV (16 bytes) support</p></li>
+<li><p>optional prefix (fixed string)</p></li>
+<li><p>optional random salt addition (<code class="docutils literal notranslate"><span class="pre">salt_length</span></code> in bytes)</p></li>
+<li><p>standard or urlsafe base64 encoding</p></li>
+<li><p>standard string encodings support</p></li>
+</ul>
+</dd>
+<dt>string format:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;random_IV:</span> <span class="pre">16&gt;&lt;prefix&gt;&lt;salt&gt;&lt;data&gt;</span></code></p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="crypto_factory.providers.AESServiceBuilder.service">
+<code class="sig-name descname">service</code><a class="headerlink" href="#crypto_factory.providers.AESServiceBuilder.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AESService</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.providers.AESServiceBuilder.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">iv=None</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">salt_length=None</em>, <em class="sig-param">urlsafe=None</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.providers.AESServiceBuilder.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>AESServiceBuilder initialisation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>bytes</em>) – key of 16, 24 or 32 bytes</p></li>
+<li><p><strong>iv</strong> (<em>bytes</em>) – fixed IV of 16 bytes
+If None, a random IV will be generated on each call and added to
+encrypted data.</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – Optional string of data added to encrypted data.</p></li>
+<li><p><strong>salt_length</strong> (<em>int</em>) – Optional random value of ‘salt_length’ bytes added to encrypted data.</p></li>
+<li><p><strong>urlsafe</strong> (<em>bool</em>) – If True, use ‘urlsafe’ Base64 encoding. Else, use standard Base64.
+This apply to both key and iv values. Ensure same Base64 method has
+been used to generate them.</p></li>
+<li><p><strong>encoding</strong> (<em>str</em>) – Any supported Python encoding to use for Str / Bytes conversion.
+(See <a class="reference external" href="https://docs.python.org/3/library/codecs.html#standard-encodings">codecs</a> for details)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict of parameters for <code class="docutils literal notranslate"><span class="pre">AESService</span></code></p>
+</dd>
+</dl>
+<div class="admonition note" id="provider-subclassing">
+<p class="admonition-title">Note</p>
+<p>This provider can be sub-classed in order to define parameters
+default values. This would allow to design a specific AES
+implementation without the need to provide all parameters on each
+initialisation.</p>
+<p>These parameters can bet set in the <code class="docutils literal notranslate"><span class="pre">_defaults</span></code> class attribute
+(dict). <code class="docutils literal notranslate"><span class="pre">key</span></code> parameter cannot be defined as defaults as it should
+always be provided from client.</p>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyAESBuilder</span><span class="p">(</span><span class="n">AESServiceBuilder</span><span class="p">):</span>
+    <span class="n">_defaults</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">iv</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;MyAES-prefix&#39;</span><span class="p">,</span>
+        <span class="n">salt_length</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+        <span class="n">urlsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-16&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-crypto_factory.utils"><span id="api-utils"></span></span><div class="section" id="utilities">
+<h2>utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the <code class="docutils literal notranslate"><span class="pre">CryptoUtils</span></code> class available within the Crypto-Factory
+interface through the <code class="docutils literal notranslate"><span class="pre">utils</span></code> property.</p>
+<dl class="class">
+<dt id="crypto_factory.utils.CryptoUtils">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.utils.</code><code class="sig-name descname">CryptoUtils</code><a class="headerlink" href="#crypto_factory.utils.CryptoUtils" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="crypto_factory.utils.CryptoUtils.valid_tag_chars">
+<code class="sig-name descname">valid_tag_chars</code><em class="property"> = '!#(),-.:;&lt;&gt;?&#64;[]_{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</em><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.valid_tag_chars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.normalize_tag">
+<em class="property">classmethod </em><code class="sig-name descname">normalize_tag</code><span class="sig-paren">(</span><em class="sig-param">tag</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.normalize_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p id="normalize-tag"><strong>Normalize tag</strong> value</p>
+<p>If tag is type <em>int</em>, will return its string representation (<em>str</em>).</p>
+<p>If tag is type <em>dict</em>, will look for ‘tag’ key value ; then will
+validate string  as <em>str</em>.</p>
+<p>If tag is type <em>str</em>, will check if its characters are valid then return
+a normalized tag in upper format:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Valid characters are ascii letters, digits and punctuation in
+“<code class="docutils literal notranslate"><span class="pre">!#(),-.:;&lt;&gt;?&#64;[]_{|}</span></code>”.</p></li>
+<li><p>“<cite>$</cite>” (used as separator), and other characters will be removed.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tag</strong> (<em>str</em><em> or </em><em>int</em><em> or </em><em>dict</em>) – Value to normalize as ‘tag’.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>normalized tag</strong> (upper <cite>str</cite>) OR <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.get_tag">
+<em class="property">classmethod </em><code class="sig-name descname">get_tag</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get tag</strong> from string (encrypted data)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.remove_tag">
+<em class="property">classmethod </em><code class="sig-name descname">remove_tag</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.remove_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Remove tag</strong> from string (encrypted data)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.compare_tag">
+<em class="property">classmethod </em><code class="sig-name descname">compare_tag</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">tag</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.compare_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Compare tag</strong>.
+Return <cite>True</cite> if tag in string (encrypted data), else <cite>False</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.generate_key">
+<em class="property">static </em><code class="sig-name descname">generate_key</code><span class="sig-paren">(</span><em class="sig-param">size=256</em>, <em class="sig-param">urlsafe=True</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.generate_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate <strong>random keys</strong> (as <em>bytes</em>) of 128, 192, 256, or 512 bits size.
+(standard or urlsafe <code class="docutils literal notranslate"><span class="pre">base64</span></code> encoded.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.generate_tag">
+<em class="property">static </em><code class="sig-name descname">generate_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.generate_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a <strong>unique tag</strong> (return a standard <code class="docutils literal notranslate"><span class="pre">uuid4</span></code> as <em>str</em>)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.generate_string">
+<em class="property">classmethod </em><code class="sig-name descname">generate_string</code><span class="sig-paren">(</span><em class="sig-param">length=8</em>, <em class="sig-param">chars=None</em>, <em class="sig-param">tag=False</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.generate_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a <strong>random string</strong> value of ‘n’ valid characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<em>int</em>) – Number of characters to return.</p></li>
+<li><p><strong>chars</strong> (<em>str</em>) – Valid characters tu use. If <em>None</em>, will use any charaters from
+ascii_letters, digits &amp; punctuation (from <code class="docutils literal notranslate"><span class="pre">string</span></code> library).</p></li>
+<li><p><strong>tag</strong> (<em>bool</em>) – If <em>True</em>, will use valid characters for tag.
+(take precedence on <cite>chars</cite> argument)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str
+(None if length is not int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.data_string">
+<em class="property">static </em><code class="sig-name descname">data_string</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">errors='strict'</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.data_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <strong>data</strong> to <cite>str</cite> using  standard encoding values if data is <cite>bytes</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.data_bytes">
+<em class="property">static </em><code class="sig-name descname">data_bytes</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">errors='strict'</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.data_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <strong>data</strong> to <cite>bytes</cite> using  standard encoding values if data is <cite>str</cite>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.b64encode">
+<em class="property">static </em><code class="sig-name descname">b64encode</code><span class="sig-paren">(</span><em class="sig-param">s</em>, <em class="sig-param">urlsafe=True</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.b64encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.utils.CryptoUtils.b64decode">
+<em class="property">static </em><code class="sig-name descname">b64decode</code><span class="sig-paren">(</span><em class="sig-param">s</em>, <em class="sig-param">urlsafe=True</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.utils.CryptoUtils.b64decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-crypto_factory.exceptions"><span id="api-exceptions"></span></span><div class="section" id="exceptions">
+<h2>exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the <code class="docutils literal notranslate"><span class="pre">CryptoFactoryError</span></code> Exception class.</p>
+<dl class="exception">
+<dt id="crypto_factory.exceptions.CryptoFactoryError">
+<em class="property">exception </em><code class="sig-prename descclassname">crypto_factory.exceptions.</code><code class="sig-name descname">CryptoFactoryError</code><a class="headerlink" href="#crypto_factory.exceptions.CryptoFactoryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crypto-Factory exceptions class to simplify errors management in client interface.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-crypto_factory.templates"><span id="api-templates"></span></span><div class="section" id="templates">
+<h2>templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
+<p>This module contains <code class="docutils literal notranslate"><span class="pre">CryptoBuilder</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">CryptoService</span></code> parent classes to use when designing a Crypto provider.</p>
+<dl class="class">
+<dt id="crypto_factory.templates.CryptoBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.templates.</code><code class="sig-name descname">CryptoBuilder</code><a class="headerlink" href="#crypto_factory.templates.CryptoBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template to design a <strong>Crypto Builder</strong>. Main purpose is to define an
+<code class="docutils literal notranslate"><span class="pre">initialize</span></code> method to assign to a Crypto Service.</p>
+<p>This Crypto Service must be designated in the <code class="docutils literal notranslate"><span class="pre">service</span></code> class attribute.</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">initialize</span></code> method will forward all parameters received by
+the <code class="docutils literal notranslate"><span class="pre">register</span></code> command as a dict. This method can be personalised to fulfill
+the needs of the implemented cryptography recipe.</p>
+<p>All defined Crypto Builders must inherit from the <code class="docutils literal notranslate"><span class="pre">CryptoBuilder</span></code> class.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyBuilder</span><span class="p">(</span><span class="n">CryptoBuilder</span><span class="p">):</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">MyService</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">cipher</span> <span class="o">=</span> <span class="n">MyCryptoRecipe</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cipher</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note:</dt><dd><p>See this <strong>warning</strong> on <a class="reference internal" href="../modules/templates.html#memory-warning"><span class="std std-ref">sensitive data in memory</span></a>.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="crypto_factory.templates.CryptoBuilder.service">
+<code class="sig-name descname">service</code><em class="property"> = None</em><a class="headerlink" href="#crypto_factory.templates.CryptoBuilder.service" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.templates.CryptoBuilder.initialize">
+<em class="property">static </em><code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.templates.CryptoBuilder.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="crypto_factory.templates.CryptoService">
+<em class="property">class </em><code class="sig-prename descclassname">crypto_factory.templates.</code><code class="sig-name descname">CryptoService</code><span class="sig-paren">(</span><em class="sig-param">cipher</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.templates.CryptoService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template to design a <strong>Crypto Service</strong>. Called by an associated builder,
+it must implement abstraction methods from the <code class="docutils literal notranslate"><span class="pre">interface</span></code> module
+(encrypt &amp; decrypt).</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method will provide the <strong>cipher</strong> (config) built
+by the Crypto builder. It can be personalised to fulfill the needs of the
+implemented cryptography recipe.</p>
+<p>All defined Crypto Services must inherit from the <code class="docutils literal notranslate"><span class="pre">CryptoService</span></code> class.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyService</span><span class="p">(</span><span class="n">CryptoService</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">enc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enc</span>
+
+    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plain</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note:</dt><dd><p>See this <strong>warning</strong> on <a class="reference internal" href="../modules/templates.html#memory-warning"><span class="std std-ref">sensitive data in memory</span></a>.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="crypto_factory.templates.CryptoService.encrypt">
+<code class="sig-name descname">encrypt</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.templates.CryptoService.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="crypto_factory.templates.CryptoService.decrypt">
+<code class="sig-name descname">decrypt</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#crypto_factory.templates.CryptoService.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto-Factory</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/interface.html">Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/factory.html">Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/providers.html">Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/templates.html">Templates</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interface">interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#factory">factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#providers">providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#templates">templates</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../modules/templates.html" title="previous chapter">Templates</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, LuckyDams.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/API.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

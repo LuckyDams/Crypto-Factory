@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Templates &#8212; Crypto-Factory 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="../api/API.html" />
+    <link rel="prev" title="Exceptions" href="exceptions.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="templates">
+<span id="templates-module"></span><h1>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>In order to design your own cryptography recipes, you will need:</dt><dd><ul class="simple">
+<li><p>One or more <strong>builder(s)</strong> based on the <code class="docutils literal notranslate"><span class="pre">CryptoBuilder</span></code> class to
+initialize a service.</p></li>
+<li><p>One <strong>service</strong> based on <code class="docutils literal notranslate"><span class="pre">CryptoService</span></code> class to provide cryptography
+methods (encrypt/decrypt).</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">crypto_factory</span> <span class="k">import</span> <span class="n">CryptoFactory</span>
+<span class="kn">from</span> <span class="nn">crypto_factory.templates</span> <span class="k">import</span> <span class="n">CryptoBuilder</span><span class="p">,</span> <span class="n">CryptoService</span>
+
+<span class="n">cf</span> <span class="o">=</span> <span class="n">CryptoFactory</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">MyBuilder</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">CryptoBuilder</span><span class="p">):</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">MyService</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">cipher</span> <span class="o">=</span> <span class="n">MyCryptoRecipe</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cipher</span>
+
+<span class="k">class</span> <span class="nc">MyService</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">CryptoService</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">enc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enc</span>
+
+    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="n">plain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plain</span>
+
+<span class="n">cf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">},</span> <span class="n">sid</span><span class="o">=</span><span class="s1">&#39;MyID&#39;</span><span class="p">,</span> <span class="n">builder</span><span class="o">=</span><span class="n">MyBuilder</span><span class="p">,</span> <span class="n">tag</span><span class="o">=...</span><span class="p">)</span>
+<span class="n">cf</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;My_Secret&#39;</span><span class="p">,</span> <span class="s1">&#39;MyID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note <strong>Built-in providers</strong> can also be sub-classed in order to
+personalized their behaviour.
+(See <a class="reference internal" href="../api/API.html#provider-subclassing"><span class="std std-ref">this note</span></a> from <code class="docutils literal notranslate"><span class="pre">AESServiceBuilder</span></code>)</p>
+<div class="admonition warning" id="memory-warning">
+<p class="admonition-title">Warning</p>
+<p>A note about <strong>sensitive data in memory</strong>:</p>
+<p>Sensitive data like keys or any Crypto service parameters are loaded in
+memory when a builder instantiate the service (<code class="docutils literal notranslate"><span class="pre">register</span></code> method from
+<code class="docutils literal notranslate"><span class="pre">factory</span></code> class). They will live in memory until the service is
+unregistered. Depending on your environment, this can be considered as a
+security vulnerability (in case of malicious memory dump).</p>
+<p>In the same way, if your encryption algorithm (cipher) is created in the
+builder <code class="docutils literal notranslate"><span class="pre">initialize</span></code> method, it will live as long as the service is
+available. For lower exposure, the cipher creation can be implemented in
+the Crypto Service methods (<code class="docutils literal notranslate"><span class="pre">encrypt</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">decrypt</span></code> or a dedicated
+method on your own). Therefore, it will only live on demand upon <code class="docutils literal notranslate"><span class="pre">get</span></code>
+method call from <code class="docutils literal notranslate"><span class="pre">factory</span></code> class (at the cost of creating it each times).</p>
+<p>Please also note, there is no memory clearing process implemented in
+<code class="docutils literal notranslate"><span class="pre">Crypto-Factory</span></code> as there is no reliable solution in Python.
+For more details, check
+<a class="reference external" href="https://cryptography.io/en/latest/limitations/?highlight=memory">https://cryptography.io/en/latest/limitations/?highlight=memory</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For implementation details, check relative <a class="reference internal" href="../api/API.html#api-templates"><span class="std std-ref">API</span></a>
+documentation. Also, Crypto built-in builders and services from the <code class="docutils literal notranslate"><span class="pre">providers</span></code>
+module can be reviewed as real use cases.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto-Factory</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="factory.html">Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="providers.html">Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Templates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="exceptions.html" title="previous chapter">Exceptions</a></li>
+      <li>Next: <a href="../api/API.html" title="next chapter">API reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, LuckyDams.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/modules/templates.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

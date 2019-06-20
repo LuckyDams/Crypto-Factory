@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting started &#8212; Crypto-Factory 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface" href="modules/interface.html" />
+    <link rel="prev" title="Welcome to Crypto-Factory’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<span id="id1"></span><h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>Welcome! This section is an overview of Crypto-Factory; for further details,
+see the documentation for each modules and the API doc section.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Main purpose of Crypto-Factory library is to provide a <strong>common interface</strong>
+to application for cryptographic tasks.</p>
+<p>Based on Factory method design pattern, it provides an abstraction layer to
+define cryptographic recipes as service providers, a <strong>‘factory’ manager</strong> to
+register and create individual instances, and a standardized client interface
+to interact with them.
+With this approach, implementing existing or new cryptographic methods is
+simplified, more reusable and easier to maintain.</p>
+<p>Crypto-Factory does not provide any Cryptographic algorithms on its own but
+relies on existing Python packages such as
+<a class="reference external" href="https://github.com/pyca/cryptography">pyca/cryptography</a> which is used to
+define some <strong>built-in Crypto providers</strong>. These providers can be used as a
+quick starter or samples for dedicated implementations.
+For this purpose, <strong>Templates</strong> class are also available to design your own
+recipes using your preferred cryptography packages.</p>
+</div>
+<div class="section" id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import  &amp; initialize</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">crypto_factory</span> <span class="k">import</span> <span class="n">CryptoFactory</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span> <span class="o">=</span> <span class="n">CryptoFactory</span><span class="p">()</span>
+
+<span class="c1"># Define your Crypto providers configuration</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conf_AES</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">...</span>     <span class="c1"># existing service</span>
+<span class="o">...</span>     <span class="s1">&#39;key&#39;</span> <span class="p">:</span> <span class="sa">b</span><span class="s1">&#39;WkqHg8m9RwmE1iPQJAbuJRKmh72vLvUNFepIWrOldKg=&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s1">&#39;iv&#39;</span>  <span class="p">:</span> <span class="sa">b</span><span class="s1">&#39;vdU1T6NvAZJIlnznSe8gbQ==&#39;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">}</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">new_key</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">generate_key</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">conf_Fernet</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">...</span>     <span class="c1"># new service</span>
+<span class="o">...</span>     <span class="s1">&#39;id&#39;</span> <span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s1">&#39;builder&#39;</span> <span class="p">:</span> <span class="s1">&#39;FernetServiceBuilder&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s1">&#39;tag&#39;</span> <span class="p">:</span> <span class="s1">&#39;FERNET_TAG&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s1">&#39;key&#39;</span> <span class="p">:</span> <span class="n">new_key</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">}</span>
+
+<span class="c1"># Register both providers</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">conf_AES</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">sid</span><span class="o">=</span><span class="s1">&#39;aes&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">builder</span><span class="o">=</span><span class="s1">&#39;AESServiceBuilder&#39;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;AES_TAG&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="s1">&#39;aes&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">new_mode</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">conf_Fernet</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">new_mode</span><span class="p">)</span>
+<span class="s1">&#39;new&#39;</span>
+
+<span class="c1"># Encrypt data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">old_secret</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;My_Secret&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;aes&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">new_secret</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;My_Secret&#39;</span><span class="p">,</span> <span class="n">new_mode</span><span class="p">)</span>
+
+<span class="c1"># Decrypt data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">old_secret</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;aes&#39;</span><span class="p">)</span>
+<span class="s1">&#39;My_Secret&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">new_secret</span><span class="p">)</span>  <span class="c1"># (mode is not required with tagging)</span>
+<span class="s1">&#39;My_Secret&#39;</span>
+
+<span class="c1"># Decrypt wrong hash</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">old_secret</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="n">CryptoFactoryError</span><span class="p">:</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">decrypt</span> <span class="k">with</span> <span class="n">Crypto</span> <span class="n">service</span><span class="p">:</span> <span class="n">new</span>
+
+<span class="c1"># Rotate cipher from one or more modes to a target one (migration)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">secret</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">old_secret</span><span class="p">,</span> <span class="n">from_modes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;aes&#39;</span><span class="p">,</span> <span class="p">],</span> <span class="n">to_mode</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cf</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">)</span>
+<span class="s1">&#39;My_Secret&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>Current implemented features are:</p>
+<dl class="simple">
+<dt><strong>Client interface</strong>:</dt><dd><p>Symmetric encryption: encrypt, decrypt, rotate.</p>
+</dd>
+<dt><strong>Factory</strong> (Services manager):</dt><dd><p>To register and call Crypto service providers.</p>
+</dd>
+<dt><strong>Built-in Crypto providers</strong>:</dt><dd><p>Services for AES &amp; Fernet encryption.
+(can be used as quick starter or samples to define your own recipes)</p>
+</dd>
+<dt><strong>Tagging mechanism</strong>:</dt><dd><p>Tag encrypted data to identify provider ; can be enforced or disabled.</p>
+</dd>
+<dt><strong>Utilities &amp; helpers</strong>:</dt><dd><p>Manage tags &amp; providers, generate random keys, string encoding, …</p>
+</dd>
+<dt><strong>Exceptions</strong>:</dt><dd><p>Single <cite>CryptoFactoryError</cite> class to catch errors.
+(basic implementation to simplify errors management on client side)</p>
+</dd>
+<dt><strong>Templates</strong>:</dt><dd><p>Base classes to implement a Crypto services and its related builder(s).</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Crypto-Factory is best installed via <a class="reference external" href="http://pip-installer.org">pip</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install Crypto-Factory
+</pre></div>
+</div>
+<p>Or cloning the Git repository and running within it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
+</pre></div>
+</div>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>In order for Crypto-Factory’s installation to succeed, you will need the following:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/downloads/">Python</a> programming language, versions 3.4+</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/Attr-Dict/">Attr-Dict</a> and
+<a class="reference external" href="https://pypi.org/project/cryptography/">cryptography</a> libraries</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Crypto-Factory</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/interface.html">Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/factory.html">Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/providers.html">Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/templates.html">Templates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/API.html">API reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Crypto-Factory’s documentation!</a></li>
+      <li>Next: <a href="modules/interface.html" title="next chapter">Interface</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, LuckyDams.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/getting-started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

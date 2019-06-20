@@ -1,0 +1,2 @@
+cryptography>=2.3.0
+Attr-Dict>=0.1.0

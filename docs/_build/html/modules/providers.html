@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Providers &#8212; Crypto-Factory 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utilities" href="utils.html" />
+    <link rel="prev" title="Factory" href="factory.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="providers">
+<span id="providers-module"></span><h1>Providers<a class="headerlink" href="#providers" title="Permalink to this headline">¶</a></h1>
+<p><strong>Built-in Crypto builders</strong> and associated services can be used directly for
+a quick integration in your application or can be reviewed as examples
+to implement your own cryptography recipes.
+(see <code class="docutils literal notranslate"><span class="pre">templates</span></code> for details)</p>
+<p>They are easily accessible from the <code class="docutils literal notranslate"><span class="pre">providers</span></code> property of the Crypto-Factory
+interface.</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mode</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">cf</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">generate_key</span><span class="p">()),</span>
+<span class="gp">... </span>                     <span class="n">sid</span><span class="o">=</span><span class="s1">&#39;fernet&#39;</span><span class="p">,</span> <span class="n">builder</span><span class="o">=</span><span class="s1">&#39;FernetServiceBuilder&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                     <span class="n">tag</span><span class="o">=</span><span class="s1">&#39;TAG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;My_Secret&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cf</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">&#39;My_Secret&#39;</span>
+</pre></div>
+</div>
+<p><strong>Available Crypto providers</strong>:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DummyServiceBuilder</span></code>:</dt><dd><p>Surround data with a label (for illustration purpose only)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">FernetServiceBuilder</span></code>:</dt><dd><p><strong>Fernet</strong> implementation (secured)
+(<a class="reference external" href="https://cryptography.io/en/latest/fernet/">https://cryptography.io/en/latest/fernet/</a>)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">AESServiceBuilder</span></code>:</dt><dd><p><strong>AES-CBC-PKCS7</strong> implementation</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Some providers are only defined for illustration purpose and should not
+be used in real world:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DummyService</span></code> is only surrounding plain text with a label on <code class="docutils literal notranslate"><span class="pre">encrypt</span></code>
+action.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FernetService</span></code> has its cipher instantiated at register time. Therefore,
+it will live in user memory space until the service is unregistered.
+Depending on your environment, this can be considered as a security
+vulnerability (in case of malicious memory dump).</p></li>
+</ul>
+</div>
+<p>For details on each providers, check relative <a class="reference internal" href="../api/API.html#api-providers"><span class="std std-ref">API</span></a>
+documentation.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto-Factory</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="factory.html">Factory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="factory.html" title="previous chapter">Factory</a></li>
+      <li>Next: <a href="utils.html" title="next chapter">Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, LuckyDams.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/modules/providers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
