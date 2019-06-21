@@ -112,3 +112,4 @@ venv.bak/
 /private
 *old*
 */libs/
+*.ffs_db
