@@ -93,7 +93,7 @@ Help on class FernetServiceBuilder in module crypto_factory.providers...
 >>> test0 = cf.encrypt('My_Secret', mode=0)
 
 >>> test0
-'DUMMY$<secret>My_Secret</secret>'
+'DUMMY$[secret]My_Secret'
 >>> test1 = cf.encrypt('My_Secret', mode=1)
 
 >>> test1                                                           # doctest: +ELLIPSIS
@@ -115,7 +115,7 @@ Help on class FernetServiceBuilder in module crypto_factory.providers...
 >>> cf.decrypt(test2, mode=1)
 Traceback (most recent call last):
   ...
-crypto_factory.exceptions.CryptoFactoryError: Unable to decrypt with Crypto service: 1
+crypto_factory.exceptions.CryptoFactoryError: Unable to decrypt: Invalid key or string
 
 # Display registered TAGs
 >>> cf.services.tags
@@ -208,7 +208,7 @@ crypto_factory.exceptions.CryptoFactoryError: Unable to rotate data with provide
 ... builder='FernetServiceBuilder', tag='TAG')
 Traceback (most recent call last):
 ...
-crypto_factory.exceptions.CryptoFactoryError: Unable to start provider
+crypto_factory.exceptions.CryptoFactoryError: Unable to initialize provider: Invalid key: Incorrect padding
 
 # Implementing exception
 >>> from crypto_factory.exceptions import CryptoFactoryError
@@ -217,7 +217,7 @@ crypto_factory.exceptions.CryptoFactoryError: Unable to start provider
 ... except CryptoFactoryError as err:
 ...     print("CryptoFactory error: {0}".format(err))
 ...
-CryptoFactory error: Unable to decrypt with Crypto service: 3
+CryptoFactory error: Unable to decrypt: Invalid key or string
 
 # TEST new AES provider params
 >>> config_1 = {

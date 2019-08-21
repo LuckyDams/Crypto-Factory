@@ -36,14 +36,13 @@ class DummyService(CryptoService):
 
     def __init__(self, cipher):
         super().__init__(cipher)
-        self.pre_label = '<' + cipher + '>'
-        self.post_label = '</' + cipher + '>'
+        self.label = '[' + cipher + ']'
 
     def encrypt(self, raw):
         raw = CryptoUtils.data_string(raw)
 
         if isinstance(raw, str) and len(raw) > 0:
-            enc = ''.join((self.pre_label, raw, self.post_label))
+            enc = ''.join((self.label, raw))
             return enc
 
     def decrypt(self, enc):
@@ -55,7 +54,7 @@ class DummyService(CryptoService):
                 raise ValueError("Empty input string")
 
             try:
-                out = enc.split(self.pre_label, 1)[1].rsplit(self.post_label, 1)[0]
+                out = enc.split(self.label, 1)[1]
                 return out
 
             except IndexError:
@@ -73,7 +72,7 @@ class DummyServiceBuilder(CryptoBuilder):
     service = DummyService
 
     @staticmethod
-    def initialize(label=None):
+    def initialize(label='UNSAFE_Dummy'):
         if label:
             return label.lower()
 
@@ -126,8 +125,8 @@ class FernetServiceBuilder(CryptoBuilder):
                 cipher = Fernet(key)
                 return cipher
 
-            except (base64.binascii.Error, ValueError):
-                raise ValueError("Invalid key")
+            except (base64.binascii.Error, ValueError) as err:
+                raise ValueError("Invalid key: {}".format(err))
 
 
 class AESService(CryptoService):

@@ -8,16 +8,19 @@ This module owns the client interface within the main class ``CryptoFactory``.
 
 # TODO: Check Crypto service 'features' to ensure method is implemented
 
+import logging
+from .factory import CryptoServicesManager
+from .utils import CryptoUtils
+from .exceptions import CryptoFactoryError
+from .templates import CryptoBuilder, CryptoService
 
 __all__ = [
     'CryptoFactory',
 ]
 
-
-from .factory import CryptoServicesManager
-from .utils import CryptoUtils
-from .exceptions import CryptoFactoryError
-from .templates import CryptoBuilder, CryptoService
+# Create library logger
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 class CryptoFactory:
@@ -125,8 +128,9 @@ class CryptoFactory:
             try:
                 enc_data = self.__services.get(mode).encrypt(data)
                 enc_data = self.__utils.data_string(enc_data)
-            except:
-                raise CryptoFactoryError("Unable to encrypt with Crypto service: " + str(mode))
+            except Exception as err:
+                logger.exception("Unable to encrypt with Crypto service '{}': {}".format(mode, err))
+                raise CryptoFactoryError("Unable to encrypt: {}".format(err))
 
             if tag:
                 enc_data = self.__add_tag(enc_data, mode)
@@ -186,8 +190,9 @@ class CryptoFactory:
         if data:
             try:
                 plain_data = self.__services.get(mode).decrypt(data)
-            except:
-                raise CryptoFactoryError("Unable to decrypt with Crypto service: " + str(mode))
+            except Exception as err:
+                logger.exception("Unable to decrypt with Crypto service '{}': {}".format(mode, err))
+                raise CryptoFactoryError("Unable to decrypt: {}".format(err))
 
             return self.__utils.data_string(plain_data)
 

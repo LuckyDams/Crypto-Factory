@@ -11,18 +11,20 @@ This module is responsible of managing Crypto providers through the ``CryptoServ
 # TODO: Create a dedicated class to manage Builders index
 # TODO: Create a class to detect built-in and user-defined Builders
 
-
-__all__ = [
-    'CryptoServicesManager',
-]
-
-
 import inspect
+import logging
 from attr_dict import LazyIndex
 from .templates import CryptoBuilder
 from .utils import CryptoUtils
 from .exceptions import CryptoFactoryError
 
+__all__ = [
+    'CryptoServicesManager',
+]
+
+# Create library logger
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 # class CryptoTagsUtility:
 #     pass
@@ -266,10 +268,12 @@ class CryptoServicesManager:
                 try:
                     builder(**config)
                     return sid
-                except:
-                    raise CryptoFactoryError('Unable to start provider')
+                except Exception as err:
+                    logger.exception("Unable to initialize provider '{}': {}".format(sid, err))
+                    raise CryptoFactoryError("Unable to initialize provider: {}".format(err))
 
         else:
+            logger.warning("Unable to register provider '{}', missing or wrong type argument(s)".format(sid))
             raise CryptoFactoryError('Unable to register provider, missing or wrong type argument(s)')
 
     def get(self, sid):
@@ -293,7 +297,8 @@ class CryptoServicesManager:
         if builder:
             return builder()
         else:
-            raise CryptoFactoryError('Service not registered: ', sid)
+            logger.warning("Service '{}' not registered !".format(sid))
+            raise CryptoFactoryError("Service '{}' not registered !".format(sid))
 
 
 if __name__ == '__main__':

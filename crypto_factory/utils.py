@@ -6,19 +6,21 @@ utilities
 This module provides the ``CryptoUtils`` class available within the Crypto-Factory
 interface through the ``utils`` property.
 """
-
-
-__all__ = [
-    'CryptoUtils',
-]
-
-
 import os
 import base64
 import string
 import secrets
 import uuid
+import logging
 from .exceptions import CryptoFactoryError
+
+__all__ = [
+    'CryptoUtils',
+]
+
+# Create library logger
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 class CryptoUtils:
@@ -165,4 +167,5 @@ class CryptoUtils:
                 return base64.b64decode(s)
 
         except base64.binascii.Error as err:
-            raise CryptoFactoryError(err)
+            logger.exception("b64decode error: {}".format(err))
+            raise CryptoFactoryError("Invalid base64-encoded string")
