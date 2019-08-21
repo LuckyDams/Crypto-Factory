@@ -12,6 +12,7 @@ for cryptographic tasks.
 # TODO: {Last} Clean up code !!!
 
 
+import logging
 from .interface import CryptoFactory
 from . import templates
 from . import providers
@@ -43,3 +44,6 @@ __email__ = "LuckyDams@gmail.org"
 __license__ = "MIT"
 __copyright__ = "Copyright 2019 {}".format(__author__)
 
+# Create library logger
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())

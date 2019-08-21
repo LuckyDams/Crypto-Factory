@@ -89,7 +89,7 @@ class CryptoBuilder:
 
     @staticmethod
     def initialize(**params):
-            return params
+        return params
         # raise NotImplementedError("Builder class must implement 'initialize' method")
 
 
